@@ -12,11 +12,11 @@ const getAllFactures =  async (req, res) => {
 
 const addFacture = async (req, res) => {
     try {
-        const {clientId, date, montantTotal,} = req.body ;
+        const {clientId, montantTotal,} = req.body ;
         const facture = await prisma.facture.create({
             data : {
                 clientId,
-                date,        
+                date : new Date(),       
                 montantTotal,   
             }
         })
@@ -53,14 +53,14 @@ const updateFacture = async(req, res) => {
 
     try {
         const path = parseInt(req.params.id)
-        const {clientId, date, montantTotal,} = req.body ;
+        const {clientId, montantTotal,} = req.body ;
         const facture = await prisma.facture.update({
             where : {
                 id : path
             },
             data : {
                 clientId,
-                date,        
+                date : new Date(),        
                 montantTotal,   
             }
         })
