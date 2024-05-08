@@ -40,8 +40,8 @@ const deleteClients = async(req, res) => {
 }
 
 const getClient = async(req, res) => {
-    const path = parseInt(req.params.id)
     try {
+        const path = parseInt(req.params.id)
         const client = await prisma.client.findUnique({
             where : {
                 id : path
@@ -75,8 +75,25 @@ const updateClient = async(req, res) => {
     } catch (error) {
         console.log(error);
     }
+}
+
+
+const deleteClient = async(req, res) => {
+    try {
+        const path = parseInt(req.params.id)
+        const client = await prisma.client.delete({
+            where : {
+                id : path
+            }
+        })
+        res.send(client)
+    } catch (error) {
+        console.log(error)
+    }
     
 }
+
+
 
 module.exports = {
     getAll,
@@ -84,5 +101,6 @@ module.exports = {
     deleteClients,
     getClient,
     updateClient,
+    deleteClient
     
 };
