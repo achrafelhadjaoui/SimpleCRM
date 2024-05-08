@@ -12,14 +12,14 @@ const getAllEntreprises =  async (req, res) => {
 
 const addEntreprise = async (req, res) => {
     try {
-        const {nom, siegeSocial, dateCreation, identifiantFiscal, capital, nombreEmployes,
+        const {nom, siegeSocial, /*dateCreation,*/ identifiantFiscal, capital, nombreEmployes,
             ville, responsable, numeroTelephone, email
          } = req.body ;
         const entreprise = await prisma.entreprise.create({
             data : {
                 nom,              
                 siegeSocial,      
-                dateCreation,
+                dateCreation : new Date(),
                 identifiantFiscal, 
                 capital,
                 nombreEmployes,
@@ -61,7 +61,7 @@ const getEntreprise = async(req, res) => {
 const updateEntreprise = async(req, res) => {
     try {
         const path = parseInt(req.params.id)
-        const {nom, siegeSocial, dateCreation, identifiantFiscal, capital, nombreEmployes,
+        const {nom, siegeSocial, identifiantFiscal, capital, nombreEmployes,
             ville, responsable, numeroTelephone, email
          } = req.body ;
         const entreprise = await prisma.entreprise.update({
@@ -71,7 +71,7 @@ const updateEntreprise = async(req, res) => {
             data : {
                 nom,              
                 siegeSocial,      
-                dateCreation,
+                dateCreation : new Date(),
                 identifiantFiscal, 
                 capital,
                 nombreEmployes,

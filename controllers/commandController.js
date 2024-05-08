@@ -12,11 +12,11 @@ const getAllCommandes =  async (req, res) => {
 
 const addCommandes = async (req, res) => {
     try {
-        const {fournisseurId, date, statut,} = req.body ;
+        const {fournisseurId, statut,} = req.body ;
         const commande = await prisma.commandeFournisseur.create({
             data : {
                 fournisseurId,
-                date,        
+                date : new Date(),       
                 statut,   
             }
         })
@@ -53,14 +53,14 @@ const updateCommande = async(req, res) => {
 
     try {
         const path = parseInt(req.params.id)
-        const {fournisseurId, date, statut,} = req.body ;
+        const {fournisseurId, statut,} = req.body ;
         const commande = await prisma.commandeFournisseur.update({
             where : {
                 id : path
             },
             data : {
                 fournisseurId,
-                date,        
+                date : new Date(),        
                 statut,   
             }
         })
