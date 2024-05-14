@@ -4,7 +4,7 @@ const routerClient = require("express").Router();
 const {getAll, addClients, deleteClients, getClient, updateClient, deleteClient} = require("../controllers/clientController");
 const {getAllEntreprises, addEntreprise, deleteAll, deleteEntreprise, updateEntreprise, getEntreprise} = require("../controllers/entrepriseController");
 const {getAllFournisseures, addFournisseur, deleteAllFournisseures, deleteFournisseur, updateFournisseur, getFournisseur} = require("../controllers/fournissorController");
-const {getAllFactures, addFacture, deleteAllFactures, deleteFacture, updateFacture, getFacture} = require("../controllers/factureController");
+const {getAllFactures, addFacture, deleteAllFactures, deleteFacture, updateFacture, getFacture, count} = require("../controllers/factureController");
 const {getAllCommandes, addCommandes, deleteAllCommandes, deleteCommande, updateCommande, getCommand} = require("../controllers/commandController");
 const {getAllProduits, addProduit, deleteAllProduits, deleteProduit, updateProduit, getProduit} = require("../controllers/produitController");
 const {getAllLigneFactures, addLigneFacture, deleteAllLigneFactures, deleteLigneFacture, updateLigneFacture, getLigneFacture} = require("../controllers/ligneFctureController");
@@ -82,6 +82,9 @@ routerClient.route("/ligneFacture/:id")
                     .get(getLigneFacture)
                     .put(updateLigneFacture)
                     .delete(deleteLigneFacture)
+
+routerClient.route("/count/:id")
+                    .get(count)
 
 
 module.exports = routerClient;

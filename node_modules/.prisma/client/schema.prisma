@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+// entreprise.model.prisma
+model Entreprise {
+  id               Int      @id @default(autoincrement())
+  nom              String
+  siegeSocial      String
+  dateCreation     DateTime
+  identifiantFiscal String
+  capital          Float
+  nombreEmployes   Int
+  ville            String
+  responsable      String
+  numeroTelephone  String
+  email            String
+}
+
+// produit.model.prisma
+model Produit {
+  id           Int            @id @default(autoincrement())
+  nom          String
+  prixAchat    Float
+  prixVente    Float
+  tauxMarge    Float
+  dimension    String
+  taille       String
+  lignes       LigneFacture[] // Added opposite relation field
+}
+
+// client.model.prisma
+model Client {
+  id              Int      @id @default(autoincrement())
+  nom             String
+  prenom          String
+  adresse         String
+  ville           String
+  numeroTelephone String
+  email           String
+  factures        Facture[]
+}
+
+// fournisseur.model.prisma
+model Fournisseur {
+  id              Int      @id @default(autoincrement())
+  nom             String
+  adresse         String
+  ville           String
+  numeroTelephone String
+  email           String
+  commandes       CommandeFournisseur[]
+}
+
+// facture.model.prisma
+model Facture {
+  id           Int       @id @default(autoincrement())
+  client       Client    @relation(fields: [clientId], references: [id])
+  clientId     Int
+  date         DateTime
+  montantTotal Float
+  lignes       LigneFacture[]
+}
+
+// ligneFacture.model.prisma
+model LigneFacture {
+  id            Int      @id @default(autoincrement())
+  facture       Facture  @relation(fields: [factureId], references: [id])
+  factureId     Int
+  produit       Produit  @relation(fields: [produitId], references: [id])
+  produitId     Int
+  quantite      Int
+  prixUnitaire  Float
+  sousTotal     Float
+}
+
+// commandeFournisseur.model.prisma
+model CommandeFournisseur {
+  id              Int          @id @default(autoincrement())
+  fournisseur     Fournisseur  @relation(fields: [fournisseurId], references: [id])
+  fournisseurId   Int
+  date            DateTime
+  statut          String
+}

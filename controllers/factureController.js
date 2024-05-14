@@ -69,6 +69,7 @@ const updateFacture = async(req, res) => {
         console.log(error);
     }
 
+
 }
 
 
@@ -88,6 +89,20 @@ const deleteFacture = async(req, res) => {
 }
 
 
+const count = async (req, res) => {
+    const path = parseInt(req.params.id)
+    const count = await prisma.client.findUnique({
+        where: {
+            id: path
+        },
+        select: {
+                _count : true
+            }
+    })
+    res.send(count)
+}
+
+
 
 module.exports = {
     getAllFactures,
@@ -96,5 +111,6 @@ module.exports = {
     getFacture,
     updateFacture,
     deleteFacture,
+    count
     
 };
