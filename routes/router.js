@@ -83,7 +83,7 @@ routerClient.route("/ligneFacture/:id")
                     .put(updateLigneFacture)
                     .delete(deleteLigneFacture)
 
-routerClient.route("/count/:id")
+routerClient.route("/count")
                     .get(count)
 
 

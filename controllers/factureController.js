@@ -88,15 +88,21 @@ const deleteFacture = async(req, res) => {
     
 }
 
-
+// number of factures of each client
 const count = async (req, res) => {
-    const path = parseInt(req.params.id)
-    const count = await prisma.client.findUnique({
-        where: {
-            id: path
-        },
+    // const path = parseInt(req.params.id)
+    const count = await prisma.client.findMany({
+        // where: {
+        //     id: path
+        // },
         select: {
-                _count : true
+                nom: true,
+                _count : {
+                    select: {
+                        factures: true
+                    }
+                    
+                }
             }
     })
     res.send(count)
