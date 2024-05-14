@@ -7,7 +7,7 @@ const getAll =  async (req, res) => {
         const clients = await prisma.client.findMany();
         res.send(clients);
     } catch (error) {
-        console.log(err);
+        console.log(error);
     }
 }
 

@@ -6,7 +6,7 @@ const getAllLigneFactures =  async (req, res) => {
         const ligneFactures = await prisma.ligneFacture.findMany();
         res.send(ligneFactures);
     } catch (error) {
-        console.log(err);
+        console.log(error);
     }
 }
 

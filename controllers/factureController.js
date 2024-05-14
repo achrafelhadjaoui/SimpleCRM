@@ -6,7 +6,7 @@ const getAllFactures =  async (req, res) => {
         const factures = await prisma.facture.findMany();
         res.send(factures);
     } catch (error) {
-        console.log(err);
+        console.log(error);
     }
 }
 

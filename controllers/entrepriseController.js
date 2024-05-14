@@ -6,7 +6,7 @@ const getAllEntreprises =  async (req, res) => {
         const entreprises = await prisma.entreprise.findMany();
         res.send(entreprises);
     } catch (error) {
-        console.log(err);
+        console.log(error);
     }
 }
 

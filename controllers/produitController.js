@@ -6,7 +6,7 @@ const getAllProduits =  async (req, res) => {
         const produits = await prisma.produit.findMany();
         res.send(produits);
     } catch (error) {
-        console.log(err);
+        console.log(error);
     }
 }
 
