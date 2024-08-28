@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,24 +7,77 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-// entreprise.model.prisma
-model Entreprise {
-  id               Int      @id @default(autoincrement())
-  nom              String
-  siegeSocial      String
-  dateCreation     DateTime
-  identifiantFiscal String
-  capital          Float
-  nombreEmployes   Int
-  ville            String
-  responsable      String
-  numeroTelephone  String
-  email            String
+model client {
+  id              Int       @id @default(autoincrement())
+  nom             String
+  prenom          String
+  adresse         String
+  ville           String
+  numeroTelephone String
+  email           String
+  facture         facture[]
 }
 
-// produit.model.prisma
-model Produit {
+model commandefournisseur {
+  id            Int         @id @default(autoincrement())
+  fournisseurId Int
+  date          DateTime
+  statut        String
+  fournisseur   fournisseur @relation(fields: [fournisseurId], references: [id], map: "CommandeFournisseur_fournisseurId_fkey")
+
+  @@index([fournisseurId], map: "CommandeFournisseur_fournisseurId_fkey")
+}
+
+model entreprise {
+  id                Int      @id @default(autoincrement())
+  nom               String
+  siegeSocial       String
+  dateCreation      DateTime
+  identifiantFiscal String
+  capital           Float
+  nombreEmployes    Int
+  ville             String
+  responsable       String
+  numeroTelephone   String
+  email             String
+}
+
+model facture {
+  id           Int            @id @default(autoincrement())
+  clientId     Int
+  date         DateTime
+  montantTotal Float
+  client       client         @relation(fields: [clientId], references: [id], map: "Facture_clientId_fkey")
+  lignefacture lignefacture[]
+
+  @@index([clientId], map: "Facture_clientId_fkey")
+}
+
+model fournisseur {
+  id                  Int                   @id @default(autoincrement())
+  nom                 String
+  adresse             String
+  ville               String
+  numeroTelephone     String
+  email               String
+  commandefournisseur commandefournisseur[]
+}
+
+model lignefacture {
+  id           Int     @id @default(autoincrement())
+  factureId    Int
+  produitId    Int
+  quantite     Int
+  prixUnitaire Float
+  sousTotal    Float
+  facture      facture @relation(fields: [factureId], references: [id], map: "LigneFacture_factureId_fkey")
+  produit      produit @relation(fields: [produitId], references: [id], map: "LigneFacture_produitId_fkey")
+
+  @@index([factureId], map: "LigneFacture_factureId_fkey")
+  @@index([produitId], map: "LigneFacture_produitId_fkey")
+}
+
+model produit {
   id           Int            @id @default(autoincrement())
   nom          String
   prixAchat    Float
@@ -38,59 +85,5 @@ model Produit {
   tauxMarge    Float
   dimension    String
   taille       String
-  lignes       LigneFacture[] // Added opposite relation field
-}
-
-// client.model.prisma
-model Client {
-  id              Int      @id @default(autoincrement())
-  nom             String
-  prenom          String
-  adresse         String
-  ville           String
-  numeroTelephone String
-  email           String
-  factures        Facture[]
-}
-
-// fournisseur.model.prisma
-model Fournisseur {
-  id              Int      @id @default(autoincrement())
-  nom             String
-  adresse         String
-  ville           String
-  numeroTelephone String
-  email           String
-  commandes       CommandeFournisseur[]
-}
-
-// facture.model.prisma
-model Facture {
-  id           Int       @id @default(autoincrement())
-  client       Client    @relation(fields: [clientId], references: [id])
-  clientId     Int
-  date         DateTime
-  montantTotal Float
-  lignes       LigneFacture[]
-}
-
-// ligneFacture.model.prisma
-model LigneFacture {
-  id            Int      @id @default(autoincrement())
-  facture       Facture  @relation(fields: [factureId], references: [id])
-  factureId     Int
-  produit       Produit  @relation(fields: [produitId], references: [id])
-  produitId     Int
-  quantite      Int
-  prixUnitaire  Float
-  sousTotal     Float
-}
-
-// commandeFournisseur.model.prisma
-model CommandeFournisseur {
-  id              Int          @id @default(autoincrement())
-  fournisseur     Fournisseur  @relation(fields: [fournisseurId], references: [id])
-  fournisseurId   Int
-  date            DateTime
-  statut          String
+  lignefacture lignefacture[]
 }
